@@ -11,26 +11,26 @@ function App() {
   }, []);
 
   const fetchTasks = async () => {
-    const res = await axios.get("http://localhost:5000/tasks");
+    const res = await axios.get("https://mern-todo-5046.onrender.com/");
     setTasks(res.data);
   };
 
   const addTask = async () => {
     if (!text) return;
-    await axios.post("http://localhost:5000/tasks", { text });
+    await axios.post("https://mern-todo-5046.onrender.com/", { text });
     setText("");
     fetchTasks();
   };
 
   const toggleTask = async (task) => {
-    await axios.put(`http://localhost:5000/tasks/${task._id}`, {
+    await axios.put(`https://mern-todo-5046.onrender.com/${task._id}`, {
       completed: !task.completed,
     });
     fetchTasks();
   };
 
   const deleteTask = async (id) => {
-    await axios.delete(`http://localhost:5000/tasks/${id}`);
+    await axios.delete(`https://mern-todo-5046.onrender.com/${id}`);
     fetchTasks();
   };
 
