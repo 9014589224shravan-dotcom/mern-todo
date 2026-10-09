@@ -20,13 +20,30 @@ function App() {
     setText("");
   };
 
+  const deleteTask = async (id) => {
+    await axios.delete(`${API_URL}/${id}`);
+    setTasks(tasks.filter(t => t._id !== id));
+  };
+
+  const toggleTask = async (id, completed) => {
+    const res = await axios.put(`${API_URL}/${id}`, { completed: !completed });
+    setTasks(tasks.map(t => t._id === id ? res.data : t));
+  };
+
   return (
     <div style={{textAlign:"center", marginTop:"100px"}}>
       <h3>MERN To-Do List</h3>
-      <input value={text} onChange={e=>setText(e.target.value)} />
+      <input value={text} onChange={e=>setText(e.target.value)} placeholder="Type" />
       <button onClick={addTask} style={{background:"green", color:"white", marginLeft:"5px"}}>Add</button>
-      <div>
-        {tasks.map(t=><div key={t._id}>{t.text}</div>)}
+
+      <div style={{marginTop:"20px"}}>
+        {tasks.map(t=>(
+          <div key={t._id} style={{margin:"8px"}}>
+            <input type="checkbox" checked={t.completed} onChange={()=>toggleTask(t._id, t.completed)} />
+            <span style={{textDecoration: t.completed ? "line-through" : "none", margin:"0 10px"}}>{t.text}</span>
+            <button onClick={()=>deleteTask(t._id)} style={{background:"red", color:"white"}}>Delete</button>
+          </div>
+        ))}
       </div>
     </div>
   );
