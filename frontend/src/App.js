@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import"./App.css";
-const API_URL ="https://mern-todo-5046.onrender.com/tasks";
-// For LIVE after testing, change above to:
-// const API_URL = "https://mern-todo-6048.onrender.com/tasks";
+
+const API_URL = window.location.hostname === "localhost" 
+  ? "http://localhost:5000/tasks" 
+  : "https://mern-todo-5046.onrender.com/tasks";
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [text, setText] = useState("");
 
   useEffect(() => {
-    axios.get(API_URL)
-      .then(res => setTasks(res.data))
-      .catch(err => console.log(err));
+    axios.get(API_URL).then(res => setTasks(res.data));
   }, []);
 
   const addTask = async () => {
@@ -22,19 +20,14 @@ function App() {
     setText("");
   };
 
-  const deleteTask = async (id) => {
-    await axios.delete(`${API_URL}/${id}`);
-    setTasks(tasks.filter(t => t._id !== id));
-  };
-
   return (
-    <div>
-      <h2>MERN To-Do List</h2>
+    <div style={{textAlign:"center", marginTop:"100px"}}>
+      <h3>MERN To-Do List</h3>
       <input value={text} onChange={e=>setText(e.target.value)} />
-      <button onClick={addTask}>Add</button>
-      {tasks.map(t=>(
-        <div key={t._id}>{t.text} <button onClick={()=>deleteTask(t._id)}>X</button></div>
-      ))}
+      <button onClick={addTask} style={{background:"green", color:"white", marginLeft:"5px"}}>Add</button>
+      <div>
+        {tasks.map(t=><div key={t._id}>{t.text}</div>)}
+      </div>
     </div>
   );
 }
