@@ -6,13 +6,13 @@ function App() {
   const [text, setText] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:5000/tasks").then(res => setTasks(res.data));
+    axios.get("https://mern-todo-5046.onrender.com").then(res => setTasks(res.data));
   }, []);
 
   // 👉 Place addTask here
   const addTask = () => {
     if (!text.trim()) return; // prevent empty tasks
-    axios.post("http://localhost:5000/tasks", { text, completed: false })
+    axios.post("https://mern-todo-5046.onrender.com", { text, completed: false })
       .then(res => setTasks([...tasks, res.data]));
     setText(""); // clear input after adding
   };
